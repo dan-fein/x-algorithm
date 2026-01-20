@@ -3,12 +3,11 @@
 import { useState } from 'react';
 
 const sections = [
-  { id: 'tldr', label: 'tldr' },
-  { id: 'engagement', label: 'engagement' },
+  { id: 'tldr', label: 'how it works' },
+  { id: 'engagement', label: '19 signals' },
   { id: 'scoring', label: 'scoring' },
-  { id: 'network', label: 'network' },
+  { id: 'network', label: 'in-network' },
   { id: 'diversity', label: 'diversity' },
-  { id: 'time', label: 'time' },
   { id: 'filters', label: 'filters' },
   { id: 'pipeline', label: 'pipeline' },
   { id: 'sources', label: 'sources' },
