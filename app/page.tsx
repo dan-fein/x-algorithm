@@ -1,7 +1,7 @@
 "use client"
 
-import Home from "../src/app/page"
+import RootLayout from "layout"
 
 export default function SyntheticV0PageForDeployment() {
-  return <Home />
+  return <RootLayout />
 }
