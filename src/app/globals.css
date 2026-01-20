@@ -120,6 +120,16 @@ a:hover {
   51%, 100% { opacity: 0; }
 }
 
+/* Spinner animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 .cursor {
   display: inline-block;
   width: 8px;
