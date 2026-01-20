@@ -1,5 +1,6 @@
 import { Navigation } from '@/components/Navigation';
 import { TerminalWindow } from '@/components/TerminalWindow';
+import { AskXAlgo } from '@/components/AskXAlgo';
 import data from '@/data/metadata.json';
 
 const GITHUB_BASE = 'https://github.com/xai-org/x-algorithm';
@@ -18,6 +19,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <AskXAlgo />
 
       <main className="max-w-2xl mx-auto px-6 py-12">
         {/* Header */}
