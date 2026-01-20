@@ -61,11 +61,29 @@ export default function Home() {
             <span className="text-dim">$</span> <span className="text-green">cat</span> algorithm_decoded.md
           </h1>
 
-          <p className="text-dim leading-relaxed max-w-2xl">
-            A comprehensive technical analysis of the X recommendation algorithm.
-            What makes posts succeed or fail? 19 engagement signals, weighted scoring,
-            hard filters, and soft penalties—all extracted from the open-source codebase.
-          </p>
+          <div className="space-y-4 max-w-2xl">
+            <p className="text-lg leading-relaxed">
+              <span className="text-green font-semibold">Every post on X is scored by a machine learning model</span>{' '}
+              <span className="text-dim">that predicts how likely you are to engage with it.</span>
+            </p>
+
+            <p className="text-dim leading-relaxed">
+              This is the complete technical breakdown of that system. X open-sourced their recommendation
+              algorithm, revealing exactly how the &quot;For You&quot; feed decides what 500+ million users see every day.
+            </p>
+
+            <p className="text-dim leading-relaxed">
+              The algorithm uses a <span className="text-cyan">transformer neural network</span> (based on Grok)
+              to predict <span className="text-cyan">19 different engagement types</span> for every candidate post.
+              These predictions are combined using weighted scoring, filtered through 12 hard rules,
+              and adjusted for author diversity—all in milliseconds.
+            </p>
+
+            <p className="text-dim leading-relaxed">
+              <span className="text-yellow">This analysis extracts the key factors</span> that determine whether
+              your post reaches thousands or gets buried. No speculation—just code.
+            </p>
+          </div>
 
           <div className="flex flex-wrap gap-2 mt-6">
             <span className="badge badge-green">19 signals</span>
