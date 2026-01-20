@@ -2,10 +2,11 @@ import { Navigation } from '@/components/Navigation';
 import { Section } from '@/components/Section';
 import { TerminalWindow } from '@/components/TerminalWindow';
 
-const GITHUB_BASE = 'https://github.com/xai-org/x-algorithm';
-const LAST_UPDATED = '2025-01-20';
+import data from '@/data/metadata.json';
 
-// GitHub source links
+const GITHUB_BASE = 'https://github.com/xai-org/x-algorithm';
+
+// GitHub source links - verified paths
 const sources = {
   weightedScorer: `${GITHUB_BASE}/blob/main/home-mixer/scorers/weighted_scorer.rs`,
   oonScorer: `${GITHUB_BASE}/blob/main/home-mixer/scorers/oon_scorer.rs`,
@@ -14,7 +15,8 @@ const sources = {
   phoenixPipeline: `${GITHUB_BASE}/blob/main/home-mixer/candidate_pipeline/phoenix_candidate_pipeline.rs`,
   grok: `${GITHUB_BASE}/blob/main/phoenix/grok.py`,
   query: `${GITHUB_BASE}/blob/main/home-mixer/candidate_pipeline/query.rs`,
-  params: `${GITHUB_BASE}/blob/main/home-mixer/params.rs`,
+  libRs: `${GITHUB_BASE}/blob/main/home-mixer/lib.rs`,
+  ageFilter: `${GITHUB_BASE}/blob/main/home-mixer/filters/age_filter.rs`,
 };
 
 function SourceLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -75,7 +77,7 @@ export default function Home() {
           <div className="mt-6 p-4 border border-[#30363d] rounded-md bg-[#161b22] text-sm">
             <div className="flex flex-wrap items-center gap-4 text-dim">
               <div>
-                <span className="text-yellow">Last Updated:</span> {LAST_UPDATED}
+                <span className="text-yellow">Last Updated:</span> {data.lastUpdated}
               </div>
               <div>
                 <span className="text-yellow">Source:</span>{' '}
@@ -207,7 +209,7 @@ export default function Home() {
           <div className="mt-4 p-4 border border-[#30363d] rounded-md bg-[#161b22]">
             <p className="text-yellow text-sm">
               <span className="font-bold">// NOTE:</span> Specific weight values are excluded from the open-source release.{' '}
-              <SourceLink href={sources.params}>See params.rs →</SourceLink>
+              <SourceLink href={sources.libRs}>See lib.rs (params excluded) →</SourceLink>
             </p>
           </div>
         </Section>
@@ -562,9 +564,13 @@ ORDER BY created_at DESC
                 <SourceLink href={sources.query}>query.rs</SourceLink>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-dim w-24">params</span>
-                <SourceLink href={sources.params}>params.rs</SourceLink>
-                <span className="text-yellow text-xs">(weights excluded)</span>
+                <span className="text-dim w-24">filters</span>
+                <SourceLink href={sources.ageFilter}>age_filter.rs</SourceLink>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-dim w-24">lib</span>
+                <SourceLink href={sources.libRs}>lib.rs</SourceLink>
+                <span className="text-yellow text-xs">(params module excluded)</span>
               </div>
             </div>
           </TerminalWindow>
@@ -591,7 +597,7 @@ ORDER BY created_at DESC
             Weight values in params.rs are excluded from public release
           </p>
           <p className="mt-4 text-xs text-dim">
-            Last updated: {LAST_UPDATED}
+            Last updated: {data.lastUpdated}
           </p>
           <div className="mt-6">
             <span className="cursor" />
