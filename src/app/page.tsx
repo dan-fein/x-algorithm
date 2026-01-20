@@ -19,10 +19,10 @@ export default function Home() {
     <div className="min-h-screen">
       <Navigation />
 
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-2xl mx-auto px-6 py-12">
         {/* Header */}
-        <header className="mb-12">
-          <pre className="ascii-art mb-6">{`
+        <header className="mb-16">
+          <pre className="ascii-art mb-8">{`
 ██╗  ██╗     █████╗ ██╗      ██████╗  ██████╗
 ╚██╗██╔╝    ██╔══██╗██║     ██╔════╝ ██╔═══██╗
  ╚███╔╝     ███████║██║     ██║  ███╗██║   ██║
@@ -30,13 +30,13 @@ export default function Home() {
 ██╔╝ ██╗    ██║  ██║███████╗╚██████╔╝╚██████╔╝
 ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝`}</pre>
 
-          <p className="mb-6 text-[#a0a0a0]">
+          <p className="mb-6">
             <span className="text-green">$</span> cat README.md
           </p>
 
-          <div className="space-y-4 text-[#909090]">
+          <div className="space-y-4">
             <p>
-              Every post on X is given a <span className="text-green">score</span>.
+              Every post on X is given a <span className="text-green font-medium">score</span>.
               This score determines whether the post appears in your &quot;For You&quot; feed,
               and where it ranks.
             </p>
@@ -50,9 +50,9 @@ export default function Home() {
             </p>
           </div>
 
-          <p className="mt-6 text-dim text-sm">
+          <p className="mt-8 text-dim text-sm">
             Last updated: {data.lastUpdated} | Source:{' '}
-            <a href={GITHUB_BASE} className="underline hover:text-[#a0a0a0]">
+            <a href={GITHUB_BASE} className="underline">
               xai-org/x-algorithm
             </a>
           </p>
@@ -63,7 +63,7 @@ export default function Home() {
           <p className="mb-4"><span className="text-green">$</span> ./explain.sh</p>
 
           <TerminalWindow title="how the algorithm works">
-            <pre className="text-sm text-[#909090]">{`For each post you might see, the algorithm:
+            <pre className="text-sm">{`For each post you might see, the algorithm:
 
 1. FILTERS out posts that should never appear
    (too old, from blocked users, already seen, etc.)
@@ -90,14 +90,14 @@ export default function Home() {
             <span className="text-green">$</span> cat engagement_signals.txt
           </p>
 
-          <p className="text-[#707070] text-sm mb-4">
+          <p className="text-dim text-sm mb-4">
             The neural network predicts 19 different ways you might engage with a post.
             Each prediction is a probability from 0 to 1.
             {' '}<a href={sources.candidate} className="underline">source</a>
           </p>
 
           <TerminalWindow title="19 engagement predictions">
-            <pre className="text-sm text-[#909090]">{`POSITIVE SIGNALS (15):
+            <pre className="text-sm">{`POSITIVE SIGNALS (15):
   favorite_score        "Will they like it?"
   reply_score           "Will they reply?"
   repost_score          "Will they retweet?"
@@ -128,26 +128,43 @@ NEGATIVE SIGNALS (4):
             <span className="text-green">$</span> cat weighted_scorer.rs
           </p>
 
-          <p className="text-[#707070] text-sm mb-4">
-            Each prediction is multiplied by a weight, then all are summed together.
+          <p className="text-dim text-sm mb-4">
+            Each prediction is multiplied by a weight, then summed.
             Negative signals subtract from the score.
             {' '}<a href={sources.weightedScorer} className="underline">source</a>
           </p>
 
           <TerminalWindow title="scoring formula">
-            <pre className="text-sm text-[#909090]">{`score = (favorite_score    * FAVORITE_WEIGHT)
-      + (reply_score       * REPLY_WEIGHT)
-      + (repost_score      * REPOST_WEIGHT)
-      + (click_score       * CLICK_WEIGHT)
-      + ... (all 15 positive signals)
-      + (not_interested    * NEGATIVE_WEIGHT)   // subtracts
-      + (block_author      * NEGATIVE_WEIGHT)   // subtracts
-      + (mute_author       * NEGATIVE_WEIGHT)   // subtracts
-      + (report            * NEGATIVE_WEIGHT)   // subtracts
-
-The weights are proprietary (not in open source release).
-We know the formula, but not the exact multipliers.`}</pre>
+            <pre className="text-sm">{`score = (favorite_score       * FAVORITE_WEIGHT)
+      + (reply_score          * REPLY_WEIGHT)
+      + (repost_score         * RETWEET_WEIGHT)
+      + (quote_score          * QUOTE_WEIGHT)
+      + (click_score          * CLICK_WEIGHT)
+      + (profile_click_score  * PROFILE_CLICK_WEIGHT)
+      + (follow_author_score  * FOLLOW_AUTHOR_WEIGHT)
+      + (share_score          * SHARE_WEIGHT)
+      + (share_via_dm_score   * SHARE_VIA_DM_WEIGHT)
+      + (share_via_copy_link  * SHARE_VIA_COPY_LINK_WEIGHT)
+      + (photo_expand_score   * PHOTO_EXPAND_WEIGHT)
+      + (vqv_score            * VQV_WEIGHT)
+      + (quoted_click_score   * QUOTED_CLICK_WEIGHT)
+      + (dwell_score          * DWELL_WEIGHT)
+      + (dwell_time           * CONT_DWELL_TIME_WEIGHT)
+      - (not_interested_score * NOT_INTERESTED_WEIGHT)
+      - (block_author_score   * BLOCK_AUTHOR_WEIGHT)
+      - (mute_author_score    * MUTE_AUTHOR_WEIGHT)
+      - (report_score         * REPORT_WEIGHT)`}</pre>
           </TerminalWindow>
+
+          <div className="mt-4 p-4 border border-[--ds-border] rounded-md">
+            <p className="text-dim text-sm">
+              <strong className="text-[--ds-gray-300]">Note:</strong> The actual weight values
+              (FAVORITE_WEIGHT, REPLY_WEIGHT, etc.) are not in the open source release.
+              They are in a <code className="text-[--ds-gray-400]">params</code> module
+              that was excluded &quot;for security reasons.&quot;
+              We know the formula structure, but not the multipliers.
+            </p>
+          </div>
         </section>
 
         {/* In-network boost */}
@@ -156,23 +173,30 @@ We know the formula, but not the exact multipliers.`}</pre>
             <span className="text-green">$</span> cat oon_scorer.rs
           </p>
 
-          <p className="text-[#707070] text-sm mb-4">
+          <p className="text-dim text-sm mb-4">
             Posts from people you follow get their full score.
-            Posts from people you do not follow are multiplied by a factor (likely 0.5 to 0.8).
+            Posts from strangers are penalized.
             {' '}<a href={sources.oonScorer} className="underline">source</a>
           </p>
 
           <TerminalWindow title="in-network vs out-of-network">
-            <pre className="text-sm text-[#909090]">{`if (you follow the author) {
-    final_score = score;           // full score
+            <pre className="text-sm">{`if (you follow the author) {
+    final_score = score;                      // full score
 } else {
-    final_score = score * 0.5;     // reduced (exact factor unknown)
+    final_score = score * OON_WEIGHT_FACTOR;  // reduced
 }
 
 This is why posts from accounts you follow dominate your feed.
 Out-of-network posts need much higher engagement predictions
 to compete.`}</pre>
           </TerminalWindow>
+
+          <div className="mt-4 p-4 border border-[--ds-border] rounded-md">
+            <p className="text-dim text-sm">
+              <strong className="text-[--ds-gray-300]">Unknown:</strong> The exact value of
+              OON_WEIGHT_FACTOR is not public. It is likely between 0.3 and 0.8.
+            </p>
+          </div>
         </section>
 
         {/* Author diversity */}
@@ -181,24 +205,32 @@ to compete.`}</pre>
             <span className="text-green">$</span> cat author_diversity_scorer.rs
           </p>
 
-          <p className="text-[#707070] text-sm mb-4">
+          <p className="text-dim text-sm mb-4">
             If the same author has multiple posts in your feed, each subsequent
             post gets a reduced score. This prevents one person from flooding your feed.
             {' '}<a href={sources.authorDiversity} className="underline">source</a>
           </p>
 
           <TerminalWindow title="author diversity decay">
-            <pre className="text-sm text-[#909090]">{`multiplier = (1 - floor) * decay^position + floor
+            <pre className="text-sm">{`multiplier = (1 - FLOOR) * DECAY^position + FLOOR
 
-Example (with decay=0.5, floor=0.3):
-  1st post from @user:  1.0x   (full score)
-  2nd post from @user:  0.65x  (reduced)
-  3rd post from @user:  0.48x  (reduced more)
-  4th+ post from @user: 0.3x   (floor, minimum)
+How it works:
+  1st post from @user:  1.0x                (full score)
+  2nd post from @user:  (1-FLOOR)*DECAY + FLOOR
+  3rd post from @user:  (1-FLOOR)*DECAY^2 + FLOOR
+  nth post from @user:  approaches FLOOR
 
 This is why you see variety in your feed, even if one person
 posts a lot.`}</pre>
           </TerminalWindow>
+
+          <div className="mt-4 p-4 border border-[--ds-border] rounded-md">
+            <p className="text-dim text-sm">
+              <strong className="text-[--ds-gray-300]">Unknown:</strong> AUTHOR_DIVERSITY_DECAY
+              and AUTHOR_DIVERSITY_FLOOR are not public.
+              Typical values might be decay=0.5-0.7, floor=0.2-0.4.
+            </p>
+          </div>
         </section>
 
         {/* Filters */}
@@ -207,14 +239,14 @@ posts a lot.`}</pre>
             <span className="text-green">$</span> ls filters/
           </p>
 
-          <p className="text-[#707070] text-sm mb-4">
+          <p className="text-dim text-sm mb-4">
             Before scoring even happens, posts are filtered out if they match
             certain rules. No score can save a filtered post.
             {' '}<a href={sources.phoenixPipeline} className="underline">source</a>
           </p>
 
           <TerminalWindow title="hard filters (posts removed entirely)">
-            <pre className="text-sm text-[#909090]">{`PRE-SCORING FILTERS (10):
+            <pre className="text-sm">{`PRE-SCORING FILTERS (10):
   AgeFilter                 Posts older than ~48 hours
   SelfTweetFilter           Your own posts
   AuthorSocialgraphFilter   From users you blocked or muted
@@ -238,12 +270,12 @@ POST-SCORING FILTERS (2):
             <span className="text-green">$</span> cat pipeline.txt
           </p>
 
-          <p className="text-[#707070] text-sm mb-4">
+          <p className="text-dim text-sm mb-4">
             The complete sequence from request to response.
           </p>
 
           <TerminalWindow title="execution order">
-            <pre className="text-sm text-[#909090]">{`1. FETCH USER DATA
+            <pre className="text-sm">{`1. FETCH USER DATA
    Your engagement history, who you follow, who you blocked
 
 2. GET CANDIDATE POSTS
@@ -277,7 +309,7 @@ POST-SCORING FILTERS (2):
           </p>
 
           <TerminalWindow title="key source files">
-            <pre className="text-sm text-[#909090]">{`weighted_scorer.rs       How scores are calculated
+            <pre className="text-sm">{`weighted_scorer.rs       How scores are calculated
 oon_scorer.rs            In-network vs out-of-network
 author_diversity.rs      Penalizing repeat authors
 phoenix_pipeline.rs      The full pipeline
@@ -295,43 +327,47 @@ All code: github.com/xai-org/x-algorithm`}</pre>
           </p>
 
           <TerminalWindow title="key takeaways">
-            <pre className="text-sm text-[#909090]">{`WHAT HELPS A POST:
-  High engagement predictions (especially replies and reposts)
-  Posted by someone the viewer follows
+            <pre className="text-sm">{`WHAT HELPS A POST:
+  High engagement predictions across all 19 signals
+  Posted by someone the viewer follows (in-network)
   Recent (under 48 hours old)
-  Not seen before
+  Not seen before by this viewer
   Author does not have other posts in same feed batch
 
-WHAT KILLS A POST:
+WHAT HURTS A POST:
   Older than 48 hours (hard filter, removed entirely)
   From a blocked or muted user (hard filter)
   Contains muted keywords (hard filter)
   Already seen (hard filter)
-  High block/mute/report predictions (score penalty)
+  High block/mute/report predictions (negative weight)
   Author has multiple posts in feed (diversity penalty)
-  From someone the viewer does not follow (0.5-0.8x score)
+  From someone the viewer does not follow (OON penalty)
 
-WHAT WE DO NOT KNOW:
-  The exact weight values (proprietary)
-  The exact OON_WEIGHT_FACTOR (proprietary)
-  The exact diversity decay and floor values (proprietary)
+WHAT IS NOT PUBLIC:
+  FAVORITE_WEIGHT, REPLY_WEIGHT, etc. (all 19 weights)
+  OON_WEIGHT_FACTOR (in-network vs out-of-network)
+  AUTHOR_DIVERSITY_DECAY and FLOOR values
+  MAX_POST_AGE exact value in seconds
 
-The algorithm optimizes for engagement, not quality.
-Your feed is personalized. What works for one audience
-may not work for another.
+The algorithm optimizes for predicted engagement.
+Your feed is personalized based on your history.
 
 $ exit 0`}</pre>
           </TerminalWindow>
         </section>
 
         {/* Footer */}
-        <footer className="mt-12 pt-8 border-t border-[#222] text-dim text-sm">
-          <p>
-            Source: <a href={GITHUB_BASE} className="underline">xai-org/x-algorithm</a>
-            {' '}| Project: <a href="https://github.com/dan-fein/x-algorithm" className="underline">dan-fein/x-algorithm</a>
-          </p>
-          <p className="mt-2">Last updated: {data.lastUpdated}</p>
-          <div className="mt-4">
+        <footer className="mt-16 pt-8 border-t border-[--ds-border] text-dim text-sm">
+          <div className="flex flex-col gap-2">
+            <p>
+              Source: <a href={GITHUB_BASE} className="underline">xai-org/x-algorithm</a>
+            </p>
+            <p>
+              Project: <a href="https://github.com/dan-fein/x-algorithm" className="underline">dan-fein/x-algorithm</a>
+            </p>
+            <p className="mt-2">Last updated: {data.lastUpdated}</p>
+          </div>
+          <div className="mt-6">
             <span className="cursor" />
           </div>
         </footer>

@@ -20,32 +20,32 @@ export function Navigation() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 right-4 z-50 px-2 py-1 border border-[#222] bg-black text-dim text-sm hover:text-[#a0a0a0]"
+        className="fixed top-4 right-4 z-50 px-3 py-1.5 border border-[--ds-border] bg-[--ds-gray-1000] text-[--ds-gray-400] text-sm hover:text-[--ds-gray-200] hover:border-[--ds-gray-600] transition-colors"
       >
         {isOpen ? '[x]' : '[=]'}
       </button>
 
       {isOpen && (
-        <nav className="fixed top-12 right-4 z-40 p-4 border border-[#222] bg-black text-sm">
+        <nav className="fixed top-14 right-4 z-40 p-4 border border-[--ds-border] bg-[--ds-gray-1000] text-sm rounded-md">
           <ul className="space-y-1">
             {sections.map(({ id, label }) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
                   onClick={() => setIsOpen(false)}
-                  className="nav-link block py-1 hover:text-[#a0a0a0]"
+                  className="nav-link block py-1.5 hover:text-[--ds-gray-100]"
                 >
                   {label}
                 </a>
               </li>
             ))}
           </ul>
-          <div className="mt-4 pt-4 border-t border-[#222] text-dim text-xs">
+          <div className="mt-4 pt-4 border-t border-[--ds-border] text-[--ds-gray-500] text-xs">
             <a
               href="https://github.com/xai-org/x-algorithm"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-[#a0a0a0]"
+              className="underline hover:text-[--ds-gray-200]"
             >
               source
             </a>
