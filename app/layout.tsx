@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'x-algorithm | Open Source Recommendation Algorithm',
-  description: 'Open source recommendation algorithm powering the For You timeline. Explore, understand, and contribute.',
+  title: 'v0 App',
+  description: 'Created with v0',
   generator: 'v0.app',
   icons: {
     icon: [
