@@ -594,6 +594,48 @@ ORDER BY created_at DESC
           </TerminalWindow>
         </Section>
 
+        {/* Bottom TL;DR */}
+        <section className="mt-16 pt-8 border-t border-[#30363d]">
+          <TerminalWindow title="tldr.sh">
+            <div className="space-y-4">
+              <div className="text-green font-bold">$ ./summarize --format=actionable</div>
+
+              <div className="pl-4 border-l-2 border-[#3fb950] space-y-3">
+                <p className="text-sm">
+                  <span className="text-cyan font-semibold">POST SUCCESS =</span>{' '}
+                  <span className="text-dim">high engagement prediction + in-network + fresh + unique</span>
+                </p>
+                <p className="text-sm">
+                  <span className="text-red font-semibold">POST FAILURE =</span>{' '}
+                  <span className="text-dim">old (&gt;7d) | blocked/muted | duplicate | negative signals</span>
+                </p>
+              </div>
+
+              <div className="text-yellow font-bold mt-6">$ ./get-recommendations</div>
+
+              <div className="pl-4 space-y-2 text-sm text-dim">
+                <p><span className="text-green">[1]</span> Post when your followers are active (recency matters)</p>
+                <p><span className="text-green">[2]</span> Create content that drives replies, not just likes</p>
+                <p><span className="text-green">[3]</span> Avoid spam patterns that trigger negative score predictions</p>
+                <p><span className="text-green">[4]</span> Build genuine follower relationships (in-network boost)</p>
+                <p><span className="text-green">[5]</span> Don&apos;t post the same thing repeatedly (deduplication filters)</p>
+              </div>
+
+              <div className="text-purple font-bold mt-6">$ cat reality-check.txt</div>
+
+              <div className="pl-4 text-sm text-dim">
+                <p>The algorithm optimizes for <span className="text-cyan">engagement probability</span>, not content quality.</p>
+                <p className="mt-2">Posts are scored independently per-viewer. What works for one audience may not work for another.</p>
+                <p className="mt-2 text-yellow">Weight values are proprietary. This analysis shows the architecture, not the exact tuning.</p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[#30363d]">
+                <span className="text-green">$</span> <span className="text-dim">exit 0</span>
+              </div>
+            </div>
+          </TerminalWindow>
+        </section>
+
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-[#30363d] text-center text-dim text-sm">
           <div className="mb-4">
