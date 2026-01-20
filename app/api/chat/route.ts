@@ -1,8 +1,7 @@
 import {
-  Experimental_Agent as Agent,
-  consumeStream,
   convertToModelMessages,
   stepCountIs,
+  streamText,
   tool,
   UIMessage,
 } from 'ai';
@@ -209,10 +208,14 @@ const getRepoOverviewTool = tool({
   },
 });
 
-// Create the agent
-const xAlgoAgent = new Agent({
-  model: 'anthropic/claude-sonnet-4',
-  system: `You are an expert assistant that helps users understand the X (formerly Twitter) recommendation algorithm.
+const tools = {
+  getRepoOverview: getRepoOverviewTool,
+  listFiles: listFilesTool,
+  readFile: readFileTool,
+  searchCode: searchCodeTool,
+};
+
+const systemPrompt = `You are an expert assistant that helps users understand the X (formerly Twitter) recommendation algorithm.
 
 You have access to the actual open-source codebase at github.com/xai-org/x-algorithm. Use your tools to explore and read the code to answer questions accurately.
 
@@ -231,24 +234,18 @@ When answering questions:
 4. Use searchCode to find relevant patterns (but be aware of rate limits)
 
 Always cite the specific files and code you reference. Format code snippets clearly.
-Be helpful, accurate, and educational. If you can't find something, say so honestly.`,
-  tools: {
-    getRepoOverview: getRepoOverviewTool,
-    listFiles: listFilesTool,
-    readFile: readFileTool,
-    searchCode: searchCodeTool,
-  },
-  stopWhen: stepCountIs(15),
-});
+Be helpful, accurate, and educational. If you can't find something, say so honestly.`;
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
-  const result = xAlgoAgent.stream({
+  const result = streamText({
+    model: 'anthropic/claude-sonnet-4',
+    system: systemPrompt,
     messages: convertToModelMessages(messages),
+    tools,
+    stopWhen: stepCountIs(15),
   });
 
-  return result.toUIMessageStreamResponse({
-    consumeSseStream: consumeStream,
-  });
+  return result.toUIMessageStreamResponse();
 }
